@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QSpiders // Java Training // IT-H Boys</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#020706;--bg2:#06110d;--green:#46ffad;--green2:#16d982;
+  --cyan:#58ddff;--white:#effff7;--muted:#8da99c;
+  --line:rgba(70,255,173,.17);--glass:rgba(7,20,15,.72);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+  radial-gradient(circle at 80% 10%,rgba(70,255,173,.11),transparent 25%),
+  radial-gradient(circle at 15% 70%,rgba(88,221,255,.07),transparent 24%),
+  var(--bg);
+  color:var(--white);font-family:Inter,Arial,sans-serif;overflow-x:hidden;
+}
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.035;
+ background-image:linear-gradient(rgba(255,255,255,.7) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.7) 1px,transparent 1px);
+ background-size:42px 42px;
+}
+body:after{
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:98;
+ background:linear-gradient(90deg,transparent,rgba(70,255,173,.025),transparent);
+ transform:translateX(-100%);animation:scan 8s linear infinite;
+}
+@keyframes scan{to{transform:translateX(100%)}}
+
+#boot{
+ position:fixed;inset:0;z-index:9999;background:#020504;display:flex;
+ align-items:center;justify-content:center;padding:25px;transition:opacity .7s,visibility .7s;
+}
+#boot.hide{opacity:0;visibility:hidden}
+.boot-box{width:min(720px,100%);font:13px/2 'JetBrains Mono';color:#7fa496}
+.boot-line{opacity:0;animation:bootLine .35s forwards}
+.boot-line:nth-child(1){animation-delay:.2s}.boot-line:nth-child(2){animation-delay:.6s}
+.boot-line:nth-child(3){animation-delay:1s}.boot-line:nth-child(4){animation-delay:1.4s}
+.boot-line:nth-child(5){animation-delay:1.8s}.boot-line:nth-child(6){animation-delay:2.2s}
+.boot-line span{color:var(--green)}
+@keyframes bootLine{to{opacity:1}}
+
+nav{
+ position:fixed;z-index:100;top:14px;left:50%;transform:translateX(-50%);
+ width:min(1120px,92%);padding:12px 16px;border:1px solid var(--line);
+ border-radius:17px;background:rgba(2,7,6,.68);backdrop-filter:blur(20px);
+ box-shadow:0 15px 45px #0008;
+}
+.nav{display:flex;justify-content:space-between;align-items:center}
+.logo{font:700 12px 'JetBrains Mono';color:var(--green);letter-spacing:1px}
+.logo b{color:white}.links a{text-decoration:none;color:#829a90;font:11px 'JetBrains Mono';margin-left:22px}
+.links a:hover{color:var(--green)}
+
+section{width:min(1120px,92%);margin:auto;padding:120px 0}
+.hero{min-height:100vh;display:grid;place-items:center;padding-top:120px;position:relative}
+.hero-orbit{
+ position:absolute;width:620px;height:620px;border:1px solid rgba(70,255,173,.08);
+ border-radius:50%;animation:orbit 24s linear infinite;
+ box-shadow:0 0 100px rgba(70,255,173,.05) inset;
+}
+.hero-orbit:before,.hero-orbit:after{content:"";position:absolute;border:1px dashed rgba(88,221,255,.13);border-radius:50%}
+.hero-orbit:before{inset:70px}.hero-orbit:after{inset:150px}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.hero-content{position:relative;z-index:2;width:min(1050px,100%)}
+.eyebrow{font:600 10px 'JetBrains Mono';letter-spacing:3px;color:var(--green);text-transform:uppercase}
+.hero h1{
+ font-size:clamp(55px,10vw,126px);line-height:.84;letter-spacing:-7px;
+ margin:18px 0 28px;font-weight:900;
+}
+.hero h1 span{
+ display:block;background:linear-gradient(100deg,#fff 15%,var(--green) 55%,var(--cyan));
+ -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-copy{max-width:690px;color:#9ab3a8;font-size:17px;line-height:1.8}
+.hero-copy strong{color:#ecfff5}
+.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.btn{
+ border:1px solid var(--line);background:rgba(70,255,173,.05);color:#c8e9d9;
+ padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:700;font-size:12px;
+ transition:.25s;cursor:pointer;
+}
+.btn.primary{background:var(--green);color:#021008;border-color:var(--green)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(70,255,173,.12)}
+.statusbar{display:flex;gap:25px;flex-wrap:wrap;margin-top:43px;font:10px 'JetBrains Mono';color:#668075}
+.statusbar b{color:var(--green)}
+
+.head{display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:40px}
+.head h2{font-size:clamp(38px,5vw,64px);line-height:.94;letter-spacing:-3px}
+.head h2 span{color:var(--green)}
+.head p{max-width:410px;color:var(--muted);font-size:14px;line-height:1.7}
+.glass{
+ border:1px solid var(--line);background:linear-gradient(145deg,rgba(11,28,21,.8),rgba(3,11,8,.76));
+ backdrop-filter:blur(18px);border-radius:22px;box-shadow:0 30px 80px #0006;
+}
+.mentor{display:grid;grid-template-columns:280px 1fr;gap:34px;padding:30px}
+.mentor-id{
+ border:1px solid var(--line);border-radius:17px;padding:25px;min-height:330px;
+ display:flex;flex-direction:column;justify-content:space-between;
+ background:linear-gradient(145deg,rgba(70,255,173,.07),rgba(88,221,255,.025));
+}
+.avatar{
+ width:95px;height:95px;border-radius:50%;border:1px solid var(--green);
+ display:grid;place-items:center;font:700 34px 'JetBrains Mono';color:var(--green);
+ box-shadow:0 0 35px rgba(70,255,173,.12);margin-bottom:25px;
+}
+.mentor-id h3{font-size:27px;letter-spacing:-1px}.role{color:var(--green);font:10px 'JetBrains Mono';margin-top:7px}
+.id-meta{font:10px/2 'JetBrains Mono';color:#698177}.id-meta b{color:#bce8d2}
+.mentor-copy{padding:10px 0}.mentor-copy h3{font-size:34px;letter-spacing:-1.5px;margin:8px 0 18px}
+.mentor-copy p{color:#a7beb4;font-size:15px;line-height:1.85;margin-bottom:15px}
+.quote{border-left:2px solid var(--green);padding:17px 20px;background:rgba(70,255,173,.035);color:#dffbed;font-size:18px;margin-top:22px}
+
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.day{padding:24px;position:relative;overflow:hidden;min-height:230px;transition:.3s}
+.day:hover{transform:translateY(-7px);border-color:rgba(70,255,173,.48);box-shadow:0 25px 55px rgba(0,0,0,.45)}
+.day:before{content:attr(data-no);position:absolute;right:13px;top:8px;font:900 75px 'JetBrains Mono';color:rgba(70,255,173,.035)}
+.dayno{color:var(--green);font:700 10px 'JetBrains Mono';letter-spacing:2px}
+.day h3{font-size:19px;margin:10px 0}.day p{font-size:13px;color:var(--muted);line-height:1.7}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.tag{font-size:10px;padding:4px 8px;border:1px solid var(--line);border-radius:100px;color:#a8c8b9}
+
+.terminal{overflow:hidden}.terminal-bar{height:42px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:7px;padding:0 15px}
+.dot{width:9px;height:9px;border-radius:50%;background:#27483a}.terminal-title{font:10px 'JetBrains Mono';color:#678177;margin-left:7px}
+.terminal-body{padding:30px;font:13px/2 'JetBrains Mono';min-height:390px;color:#9eb9ac}
+.prompt{color:var(--green)}.key{color:#ff72cb}.str{color:#a9ff76}.fn{color:var(--cyan)}.comment{color:#557568}
+.output{color:#dffbed}.cursor{display:inline-block;width:8px;height:15px;background:var(--green);vertical-align:-2px;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+
+.interactive{
+ display:grid;grid-template-columns:1fr 1fr;gap:16px;
+}
+.console,.result{padding:25px}.console h3,.result h3{font-size:18px;margin-bottom:10px}
+.console p,.result p{font-size:13px;color:var(--muted);margin-bottom:18px}
+.command{
+ width:100%;background:#020806;border:1px solid var(--line);border-radius:10px;
+ padding:13px;color:var(--green);font:12px 'JetBrains Mono';outline:none;
+}
+.command:focus{border-color:var(--green);box-shadow:0 0 20px rgba(70,255,173,.08)}
+.command-output{margin-top:18px;min-height:125px;font:12px/1.9 'JetBrains Mono';color:#90aaa0}
+.command-output b{color:var(--green)}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric{padding:25px;text-align:center}.metric strong{display:block;color:var(--green);font-size:42px;line-height:1}.metric span{font:9px 'JetBrains Mono';color:#71897f;letter-spacing:1px}
+
+.message{padding:35px;max-width:900px}.message p{color:#afc4bb;font-size:15px;line-height:1.9;margin-bottom:16px}.message strong{color:#effff7}
+.final{min-height:88vh;display:grid;place-items:center;text-align:center}
+.final-box{padding:70px 30px;width:100%;position:relative;overflow:hidden}
+.final-box:before{
+ content:"";position:absolute;width:480px;height:480px;left:50%;top:50%;transform:translate(-50%,-50%);
+ border:1px solid rgba(70,255,173,.12);border-radius:50%;
+ box-shadow:0 0 120px rgba(70,255,173,.06);
+}
+.final-box>*{position:relative}.final-box h2{font-size:clamp(45px,8vw,90px);line-height:.9;letter-spacing:-5px;margin:18px 0}
+.final-box h2 span{color:var(--green)}.signature{color:#819a90;line-height:1.8}
+footer{text-align:center;border-top:1px solid var(--line);padding:28px;color:#587267;font:10px 'JetBrains Mono'}
+
+.reveal{opacity:0;transform:translateY(30px);transition:.8s}.reveal.show{opacity:1;transform:none}
+
+@media(max-width:850px){
+ .links{display:none}.mentor{grid-template-columns:1fr}.timeline{grid-template-columns:1fr 1fr}
+ .interactive{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}
+}
+@media(max-width:550px){
+ section{padding:85px 0}.hero h1{letter-spacing:-4px}.hero-orbit{width:430px;height:430px}
+ .timeline{grid-template-columns:1fr}.mentor{padding:17px}.terminal-body{font-size:10px;padding:20px}
+ .head{display:block}.head p{margin-top:18px}.message{padding:22px}.final-box{padding:60px 20px}
+}
+
+/* NITESH_SIR.EXE Easter egg */
+#exeModal{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;padding:22px}
+#exeModal.open{display:flex}
+.exe-window{width:min(760px,100%);border:1px solid rgba(70,255,173,.38);background:#020706;box-shadow:0 0 80px rgba(70,255,173,.12),0 25px 100px #000;overflow:hidden;animation:exeIn .35s ease-out}
+.exe-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line);background:#07120e;font:11px 'JetBrains Mono';color:#7fa496}
+.exe-dot{width:8px;height:8px;border-radius:50%;background:#46ffad;box-shadow:0 0 10px #46ffad}
+.exe-body{padding:30px;font:13px/2 'JetBrains Mono';color:#91aaa0;min-height:380px}
+.exe-line{opacity:0;margin:0}.exe-line.show{opacity:1}.exe-green{color:var(--green)}.exe-white{color:#effff7}.exe-cyan{color:var(--cyan)}
+.exe-progress{height:5px;background:#0b1713;margin:20px 0;overflow:hidden}.exe-progress span{display:block;width:0;height:100%;background:var(--green);box-shadow:0 0 16px var(--green);transition:width 1.3s ease}
+.exe-close{margin-top:24px;background:transparent;color:#607b70;border:1px solid var(--line);padding:9px 14px;font:11px 'JetBrains Mono';cursor:pointer}.exe-close:hover{color:var(--green);border-color:var(--green)}
+.secret-trigger{position:fixed;right:16px;bottom:14px;z-index:90;width:25px;height:25px;border:1px solid rgba(70,255,173,.08);border-radius:50%;background:transparent;color:rgba(70,255,173,.16);font:12px 'JetBrains Mono';cursor:pointer;transition:.25s}.secret-trigger:hover{border-color:var(--green);color:var(--green);box-shadow:0 0 18px rgba(70,255,173,.2)}
+@keyframes exeIn{from{opacity:0;transform:scale(.96) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@media(max-width:600px){.exe-body{padding:22px;font-size:11px}.exe-window{max-height:90vh;overflow:auto}}
+
+</style>
+</head>
+<body>
+
+<div id="boot">
+  <div class="boot-box">
+    <div class="boot-line"><span>[BOOT]</span> Initializing QSpiders appreciation system...</div>
+    <div class="boot-line"><span>[OK]</span> Loading JAVA foundation...</div>
+    <div class="boot-line"><span>[OK]</span> Loading 13-day training memory...</div>
+    <div class="boot-line"><span>[OK]</span> Loading IT-H Boys...</div>
+    <div class="boot-line"><span>[OK]</span> Trainer detected: <span>Nitesh Tiwari</span></div>
+    <div class="boot-line"><span>[READY]</span> Experience compiled successfully ✓</div>
+  </div>
+</div>
+
+<nav>
+ <div class="nav">
+  <div class="logo">IT-H_<b>BOYS</b> // JAVA</div>
+  <div class="links">
+   <a href="#mentor">MENTOR</a><a href="#journey">JOURNEY</a><a href="#code">CODE</a><a href="#message">MESSAGE</a>
+  </div>
+ </div>
+</nav>
+
+<main>
+<header class="hero">
+ <div class="hero-orbit"></div>
+ <div class="hero-content">
+  <div class="eyebrow">// QSPIDERS • PHASE 01 • 2026</div>
+  <h1>13 DAYS.<span>ONE FOUNDATION.</span></h1>
+  <p class="hero-copy">
+   A digital experience created by <strong>IT-H Boys</strong> for
+   <strong>Nitesh Tiwari Sir</strong> — celebrating the first phase of our Java journey.
+  </p>
+  <div class="buttons">
+   <a class="btn primary" href="#mentor">INITIALIZE JOURNEY ↗</a>
+   <button class="btn" id="surprise">RUN SURPRISE.EXE</button>
+  </div>
+  <div class="statusbar">
+   <span>TRAINING <b>COMPLETED ✓</b></span>
+   <span>JAVA <b>LOADED</b></span>
+   <span>PHASE <b>01</b></span>
+   <span>JOURNEY <b>CONTINUES →</b></span>
+  </div>
+ </div>
+</header>
+
+<section id="mentor" class="reveal">
+ <div class="head">
+  <div><div class="eyebrow">// 01 — THE MENTOR</div><h2>The Person<br>Behind the <span>Code.</span></h2></div>
+  <p>For 13 days, Java was more than syntax. It became the starting point of our programming journey.</p>
+ </div>
+ <div class="glass mentor">
+  <div class="mentor-id">
+   <div><div class="avatar">&lt;/&gt;</div><h3>Nitesh Tiwari</h3><div class="role">JAVA TRAINER • QSPIDERS</div></div>
+   <div class="id-meta">BATCH <b>IT-H BOYS</b><br>YEAR <b>2ND YEAR IT</b><br>PHASE <b>01 / 13 DAYS</b><br>STATUS <b>MENTOR ✓</b></div>
+  </div>
+  <div class="mentor-copy">
+   <div class="eyebrow">TRAINER PROFILE</div>
+   <h3>More than a trainer.<br>A <span style="color:var(--green)">starting point.</span></h3>
+   <p>You didn't just teach us Java syntax. You helped us understand how to think before we code, understand before we memorize, and practice before we assume we know.</p>
+   <p>From “What is a programming language?” to number programs, quizzes, tests and activities — every session turned unfamiliar concepts into something we could actually work with.</p>
+   <div class="quote">“You made Java feel less like a difficult subject and more like a language we could actually start speaking.”</div>
+  </div>
+ </div>
+</section>
+
+<section id="journey" class="reveal">
+ <div class="head">
+  <div><div class="eyebrow">// 02 — THE LEARNING MAP</div><h2>From <span>Zero</span><br>to Logic.</h2></div>
+  <p>Our first Java foundation — visualized as the progression from concepts to problem solving.</p>
+ </div>
+ <div class="timeline">
+  <div class="glass day" data-no="01"><div class="dayno">DAY 01</div><h3>WELCOME TO JAVA</h3><p>Programming basics and the structure of a Java program.</p><div class="tags"><span class="tag">Programming Language</span><span class="tag">Java</span><span class="tag">Features</span><span class="tag">Class</span><span class="tag">Execution Flow</span><span class="tag">Main Method</span><span class="tag">Printing</span></div></div>
+  <div class="glass day" data-no="02"><div class="dayno">DAY 02</div><h3>THE BUILDING BLOCKS</h3><p>Understanding the pieces that make Java code meaningful.</p><div class="tags"><span class="tag">Commands</span><span class="tag">Tokens</span><span class="tag">Keywords</span><span class="tag">Literals</span><span class="tag">Variables</span></div></div>
+  <div class="glass day" data-no="03"><div class="dayno">DAY 03</div><h3>DATA & VARIABLES</h3><p>How Java stores and works with different kinds of values.</p><div class="tags"><span class="tag">Primitive</span><span class="tag">Non-Primitive</span><span class="tag">Data Types</span><span class="tag">Variable Types</span></div></div>
+  <div class="glass day" data-no="04"><div class="dayno">DAY 04</div><h3>MAKING CODE THINK</h3><p>Turning instructions into calculations, comparisons and logic.</p><div class="tags"><span class="tag">Operators</span><span class="tag">Conditional</span><span class="tag">Type Casting</span></div></div>
+  <div class="glass day" data-no="05"><div class="dayno">DAY 05+</div><h3>METHODS & MODIFIERS</h3><p>Understanding structure, return types and static methods.</p><div class="tags"><span class="tag">Return Types</span><span class="tag">Static Method</span><span class="tag">Modifiers</span></div></div>
+  <div class="glass day" data-no="∞"><div class="dayno">PRACTICE LOOP</div><h3>LEARN → CODE → TEST → FIX</h3><p>Number programs, activities, quizzes, tests and repeated practice.</p><div class="tags"><span class="tag">Problem Solving</span><span class="tag">Practice</span><span class="tag">Quizzes</span><span class="tag">Tests</span></div></div>
+ </div>
+</section>
+
+<section id="code" class="reveal">
+ <div class="head">
+  <div><div class="eyebrow">// 03 — SOURCE CODE</div><h2>Our Journey,<br>Written in <span>Java.</span></h2></div>
+  <p>The website itself speaks the language we spent 13 days learning.</p>
+ </div>
+ <div class="glass terminal">
+  <div class="terminal-bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="terminal-title">OurJourney.java</span></div>
+  <pre class="terminal-body"><span class="key">public class</span> <span class="fn">OurJourney</span> {
+
+    <span class="key">public static void</span> <span class="fn">main</span>(String[] args) {
+
+        String trainer = <span class="str">"Nitesh Tiwari"</span>;
+        String technology = <span class="str">"Java"</span>;
+        <span class="key">int</span> days = <span class="str">13</span>;
+
+        System.out.println(<span class="str">"Learning begins..."</span>);
+
+        <span class="comment">// We learned.</span>
+        <span class="comment">// We practiced.</span>
+        <span class="comment">// We made mistakes.</span>
+        <span class="comment">// We tried again.</span>
+
+        System.out.println(<span class="str">"Foundation created ✓"</span>);
+        System.out.println(<span class="str">"Journey continues →"</span>);
+    }
+}<span class="cursor"></span></pre>
+ </div>
+</section>
+
+<section class="reveal">
+ <div class="head">
+  <div><div class="eyebrow">// 04 — INTERACTIVE TERMINAL</div><h2>Talk to the <span>Journey.</span></h2></div>
+  <p>Type a command below. This little terminal is the hidden interactive layer of the website.</p>
+ </div>
+ <div class="interactive">
+  <div class="glass console">
+   <h3>IT-H TERMINAL</h3><p>Available commands: <b>learn</b>, <b>trainer</b>, <b>status</b>, <b>future</b></p>
+   <input id="command" class="command" placeholder="type a command..." autocomplete="off">
+   <div id="cmdout" class="command-output">Type <b>status</b> and press Enter.</div>
+  </div>
+  <div class="glass result">
+   <h3>TRAINING ENGINE</h3><p id="engineText">Waiting for input...</p>
+   <div class="tags"><span class="tag">JAVA</span><span class="tag">13 DAYS</span><span class="tag">IT-H</span><span class="tag">QSPIDERS</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="reveal">
+ <div class="head"><div><div class="eyebrow">// 05 — WHAT STAYED WITH US</div><h2>More Than<br>Just <span>Java.</span></h2></div></div>
+ <div class="timeline">
+  <div class="glass day"><div class="dayno">01 / THINK</div><h3>PROBLEM SOLVING</h3><p>Breaking a problem into smaller steps before writing code.</p></div>
+  <div class="glass day"><div class="dayno">02 / BUILD</div><h3>PRACTICE</h3><p>Writing, testing and trying again until the logic becomes clearer.</p></div>
+  <div class="glass day"><div class="dayno">03 / DEBUG</div><h3>LEARNING FROM ERRORS</h3><p>Understanding why code fails instead of being afraid of errors.</p></div>
+  <div class="glass day"><div class="dayno">04 / APPLY</div><h3>QUIZZES & TESTS</h3><p>Moving from simply listening to actually applying what we learned.</p></div>
+  <div class="glass day"><div class="dayno">05 / GROW</div><h3>CONFIDENCE</h3><p>Turning “I don't understand” into “Let me try.”</p></div>
+  <div class="glass day"><div class="dayno">06 / NEXT</div><h3>A FOUNDATION</h3><p>The first layer of a much bigger Java journey.</p></div>
+ </div>
+</section>
+
+<section class="reveal">
+ <div class="metrics">
+  <div class="glass metric"><strong id="m1">0</strong><span>DAYS OF TRAINING</span></div>
+  <div class="glass metric"><strong id="m2">0</strong><span>JAVA FOUNDATION</span></div>
+  <div class="glass metric"><strong id="m3">0</strong><span>QUESTIONS & ATTEMPTS</span></div>
+  <div class="glass metric"><strong>→</strong><span>JOURNEY CONTINUES</span></div>
+ </div>
+</section>
+
+<section id="message" class="reveal">
+ <div class="head"><div><div class="eyebrow">// 06 — FINAL COMMIT</div><h2>Dear <span>Nitesh Tiwari Sir.</span></h2></div></div>
+ <div class="glass message">
+  <p>13 days ago, Java was a collection of unfamiliar words, rules and syntax.</p>
+  <p>Today, we still have a lot more to learn — but we have something we didn't have on Day 1: <strong>a foundation.</strong></p>
+  <p>You gave us the basics, but more importantly, you gave us the confidence to start writing, testing, failing, correcting and trying again.</p>
+  <p>Your explanations made difficult concepts easier to understand. Your practice programs gave us a chance to apply what we learned. Your quizzes and tests made us think beyond simply listening.</p>
+  <p>We know these 13 days are only the <strong>first phase</strong> of our journey. There are many more concepts to learn, many more programs to write, many more errors to debug and many more challenges waiting for us.</p>
+  <p>But whenever we look back at where our Java journey started, <strong>we will remember these 13 days.</strong></p>
+  <p>Thank you for being our trainer, our guide, and a part of our first step into programming.</p>
+ </div>
+</section>
+
+<section class="final reveal">
+ <div class="glass final-box">
+  <div class="eyebrow">SYSTEM MESSAGE / FINAL OUTPUT</div>
+  <h2>Thank You,<br><span>Nitesh Tiwari Sir.</span></h2>
+  <p class="signature">With gratitude,<br><strong>IT-H Boys</strong><br>2nd Year — Information Technology</p>
+  <div class="statusbar" style="justify-content:center;margin-top:30px"><span>COMPILE <b>SUCCESS ✓</b></span><span>TRAINING <b>COMPLETE ✓</b></span><span>FUTURE <b>LOADING →</b></span></div>
+ </div>
+</section>
+</main>
+
+<!-- Hidden NITESH_SIR.EXE Easter egg -->
+<button class="secret-trigger" id="secretTrigger" aria-label="Secret system access">⌁</button>
+<div id="exeModal" role="dialog" aria-modal="true" aria-label="Nitesh Sir executable">
+ <div class="exe-window">
+  <div class="exe-bar"><span class="exe-dot"></span> NITESH_SIR.EXE <span style="margin-left:auto">SYSTEM / SECRET</span></div>
+  <div class="exe-body">
+   <p class="exe-line" id="exe1">&gt; sudo run NITESH_SIR.EXE</p>
+   <p class="exe-line" id="exe2">Authenticating mentor...</p>
+   <div class="exe-progress"><span id="exeProgress"></span></div>
+   <p class="exe-line exe-green" id="exe3">████████████████████ 100%</p>
+   <p class="exe-line exe-green" id="exe4">ACCESS GRANTED ✓</p>
+   <br>
+   <p class="exe-line exe-white" id="exe5">You didn't just teach us Java.</p>
+   <p class="exe-line exe-white" id="exe6">You gave us our first confidence to write code.</p>
+   <br>
+   <p class="exe-line exe-cyan" id="exe7">THANK YOU, SIR. ❤️</p>
+   <p class="exe-line" id="exe8">— IT-H BOYS</p>
+   <button class="exe-close" id="exeClose">[ CLOSE TERMINAL ]</button>
+  </div>
+ </div>
+</div>
+
+<footer>QSPIDERS × JAVA × IT-H BOYS • PHASE 01 • 2026</footer>
+
+<script>
+/* Boot sequence */
+setTimeout(()=>document.getElementById('boot').classList.add('hide'),3000);
+
+/* Reveal sections */
+const observer=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* Interactive terminal */
+const input=document.getElementById('command');
+const out=document.getElementById('cmdout');
+const engine=document.getElementById('engineText');
+
+function runCommand(){
+ const c=input.value.trim().toLowerCase();
+ const responses={
+  "sudo run nitesh_sir.exe":"__NITESH_EXE__",
+  "run nitesh_sir.exe":"__NITESH_EXE__",
+  learn:"<b>LEARNING:</b> Java basics → variables → data types → operators → type casting → methods → modifiers → conditions → practice.",
+  trainer:"<b>TRAINER:</b> Nitesh Tiwari Sir. <br>Role: Java Trainer & Mentor.",
+  status:"<b>STATUS:</b> PHASE 01 COMPLETE ✓<br>13 days successfully compiled.",
+  future:"<b>FUTURE:</b> More Java. More DSA. More projects. More problems to solve. →"
+ };
+ if(responses[c]){
+   if(responses[c]==="__NITESH_EXE__"){ openExe(); input.value=""; return; }
+   out.innerHTML=responses[c];
+   engine.textContent="Command executed successfully. The journey continues.";
+ }else{
+   out.innerHTML='<b>ERROR:</b> command not found. Try: learn, trainer, status, future';
+   engine.textContent="Unknown command. Try one of the available commands.";
+ }
+ input.value="";
+}
+input.addEventListener("keydown",e=>{if(e.key==="Enter")runCommand()});
+
+/* Surprise button */
+document.getElementById('surprise').addEventListener('click',()=>{
+ const messages=[
+  "ERROR 404: A way to fully thank our trainer was not found.",
+  "PATCH APPLIED: Gratitude increased to ∞.",
+  "BUILD SUCCESS: 13 days of memories compiled.",
+  "JAVA EXCEPTION: Too much knowledge acquired.",
+  "FINAL OUTPUT: Thank you, Nitesh Tiwari Sir. ❤️"
+ ];
+ let i=0;
+ const btn=document.getElementById('surprise');
+ const original=btn.textContent;
+ btn.disabled=true;
+ const timer=setInterval(()=>{
+   btn.textContent=messages[i++];
+   if(i===messages.length){
+    clearInterval(timer);
+    setTimeout(()=>{btn.textContent=original;btn.disabled=false},1800);
+   }
+ },700);
+});
+
+/* Animated metrics */
+let counted=false;
+const metricObserver=new IntersectionObserver(entries=>{
+ if(entries[0].isIntersecting && !counted){
+   counted=true;
+   animate("m1",13,900); animate("m2",100,1100); animate("m3",99,1300);
+ }
+},{threshold:.5});
+metricObserver.observe(document.querySelector('.metrics'));
+function animate(id,target,duration){
+ const el=document.getElementById(id);let start=0;const step=target/(duration/20);
+ const t=setInterval(()=>{start+=step;if(start>=target){start=target;clearInterval(t)}el.textContent=Math.floor(start)},20);
+}
+
+/* NITESH_SIR.EXE Easter egg */
+const exeModal=document.getElementById('exeModal');
+const secretTrigger=document.getElementById('secretTrigger');
+const exeClose=document.getElementById('exeClose');
+const exeLines=['exe1','exe2','exe3','exe4','exe5','exe6','exe7','exe8'];
+function openExe(){
+ exeModal.classList.add('open');
+ exeLines.forEach(id=>document.getElementById(id).classList.remove('show'));
+ document.getElementById('exeProgress').style.width='0%';
+ document.body.style.overflow='hidden';
+ const delays=[200,700,1800,2300,2800,3400,4100,4700];
+ delays.forEach((d,i)=>setTimeout(()=>document.getElementById(exeLines[i]).classList.add('show'),d));
+ setTimeout(()=>document.getElementById('exeProgress').style.width='100%',700);
+}
+function closeExe(){exeModal.classList.remove('open');document.body.style.overflow=''}
+secretTrigger.addEventListener('click',openExe); exeClose.addEventListener('click',closeExe);
+exeModal.addEventListener('click',e=>{if(e.target===exeModal)closeExe()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeExe()});
+
+</script>
+</body>
+</html>
